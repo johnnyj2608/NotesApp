@@ -6,6 +6,7 @@ const NotePage = () => {
   let { id } = useParams();
   let [note, setNote] = useState(null);
   let navigate = useNavigate();
+  let CSRF = document.cookie.slice(10);
 
   useEffect(() => {
     const getNote = async () => {
@@ -16,7 +17,6 @@ const NotePage = () => {
     getNote();
   }, [id]);
 
-  let CSRF = document.cookie.slice(10);
   let updateNote = async () => {
     fetch("/api/notes/" + id + "/update/", {
       method: "PUT",
@@ -26,6 +26,17 @@ const NotePage = () => {
       },
       body: JSON.stringify(note),
     });
+  };
+
+  let deleteNote = async () => {
+    fetch("/api/notes/" + id + "/delete/", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": CSRF,
+      },
+    });
+    navigate("/");
   };
 
   let handleSubmit = () => {
@@ -44,6 +55,7 @@ const NotePage = () => {
         <h3>
           <ArrowLeft onClick={handleSubmit} />
         </h3>
+        <button onClick={deleteNote}>Delete</button>
       </div>
       <textarea
         onChange={(e) => {
