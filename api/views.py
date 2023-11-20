@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Note
 from .serializers import NoteSerializer
-from .utils import updateNote, getNoteDetail, deleteNote
+from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote
 
 # Create your views here.
 
@@ -48,17 +48,10 @@ def getRoutes(request):
 @api_view(['GET', 'POST'])
 def getNotes(request):
     if request.method == 'GET':
-        notes = Note.objects.all()
-        serializer = NoteSerializer(notes, many=True)
-        return Response(serializer.data)
+        return getNotesList(request)
     
     if request.method == 'POST':
-        data = request.data 
-        note = Note.objects.create(
-            body=data['body']
-        )
-        serializer = NoteSerializer(note, many=False)
-        return Response(serializer.data)
+        return createNote(request)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def getNote(request, pk):
