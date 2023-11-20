@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Note
-from .serializers import NoteSerializer
 from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote
 
 # Create your views here.

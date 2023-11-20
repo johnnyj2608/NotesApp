@@ -27,8 +27,9 @@ def updateNote(request, pk):
 
     if serializer.is_valid():
         serializer.save()
+        return Response(serializer.data)
 
-    return serializer.data
+    return Response(serializer.errors, status=400)
 
 def deleteNote(request, pk):
     note = Note.objects.get(id=pk)
